@@ -1,5 +1,6 @@
 "use client";
 
+import { Landmark, Crown, Moon, Building2 } from "lucide-react";
 import FadeIn from "./FadeIn";
 
 interface SejarahProps {
