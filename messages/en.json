@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "sejarah": "History",
+    "galeri": "Gallery",
+    "tenun": "Weaving",
+    "kamus": "Dictionary & Map",
+    "kuliner": "Cuisine & Events"
+  },
+  "hero": {
+    "tagline": "EXPLORING THE SOUL OF MBOJO",
+    "title": "Maja Labo Dahu",
+    "quote": "\"Ashamed of wrongdoing, Fearful of God.\"",
+    "desc": "The noble philosophy guiding the people of Bima. This website is designed as an interactive digital gateway to explore the rich culture of Bima.",
+    "badge": "Archipelago Heritage | 100+ CLASSIC WEAVING MOTIFS"
+  },
+  "sejarah": {
+    "title": "Tracing Bima's History",
+    "items": [
+      { "title": "Masa Naka Era", "desc": "The prehistoric era and formation of early communities (Ncuhi) who led territories across the Mbojo land before any centralized kingdom." },
+      { "title": "Kingdom of Bima", "desc": "The establishment of a monarchy influenced by Hindu culture, becoming one of the important maritime powers in eastern Nusantara." },
+      { "title": "Sultanate of Bima", "desc": "Transition to an Islamic Sultanate in the early 17th century (Sultan Abdul Kahir I), bringing major changes to law, arts, and culture." },
+      { "title": "Modern Bima", "desc": "Integration with the Republic of Indonesia. The sultanate's legacy is now preserved through Museum Asi Mbojo and community traditions." }
+    ]
+  },
+  "footer": {
+    "title": "Let's Preserve Together",
+    "desc": "Be part of the journey to preserve and promote the splendor of Bima's culture to the world.",
+    "copy": "© 2026 Bima Digital Culture Platform. A Preserved Heritage."
+  }
+}

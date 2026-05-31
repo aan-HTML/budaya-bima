@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "sejarah": "Sejarah",
+    "galeri": "Galeri",
+    "tenun": "Tenun",
+    "kamus": "Kamus & Peta",
+    "kuliner": "Kuliner & Event"
+  },
+  "hero": {
+    "tagline": "MENJELAJAHI JIWA MBOJO",
+    "title": "Maja Labo Dahu",
+    "quote": "\"Malu berbuat hal yang menyimpang, Takut kepada Tuhan.\"",
+    "desc": "Filosofi luhur panduan hidup masyarakat Bima. Website ini dirancang sebagai gerbang digital interaktif untuk mengeksplorasi kekayaan budaya Bima.",
+    "badge": "Kekayaan Nusantara | 100+ MOTIF TENUN KLASIK"
+  },
+  "sejarah": {
+    "title": "Jejak Sejarah Bima",
+    "items": [
+      { "title": "Masa Naka", "desc": "Era prasejarah dan pembentukan komunitas awal (Ncuhi) yang memimpin wilayah-wilayah di tanah Mbojo sebelum adanya sistem kerajaan terpusat." },
+      { "title": "Kerajaan Bima", "desc": "Berdirinya sistem monarki dengan pengaruh kebudayaan Hindu. Menjadi salah satu kekuatan maritim penting di kawasan timur Nusantara." },
+      { "title": "Kesultanan Bima", "desc": "Transisi menjadi Kesultanan Islam pada awal abad ke-17 (Sultan Abdul Kahir I), membawa perubahan besar pada sistem hukum, seni, dan budaya." },
+      { "title": "Bima Modern", "desc": "Integrasi dengan Republik Indonesia. Warisan kesultanan kini dilestarikan melalui Museum Asi Mbojo dan praktik tradisi masyarakat." }
+    ]
+  },
+  "footer": {
+    "title": "Mari Lestarikan Bersama",
+    "desc": "Jadilah bagian dari perjalanan melestarikan dan mempromosikan pesona budaya Bima ke mata dunia.",
+    "copy": "© 2026 Platform Digital Budaya Bima. Warisan yang Terjaga."
+  }
+}
