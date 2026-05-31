@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import FadeIn from "./FadeIn";
-import { Box, Check } from "lucide-react";
+import { BookOpen, Check } from "lucide-react";
+import { AnimatePresence } from "framer-motion";
+import TenunStory from "./TenunStory";
 
 export default function Tenun() {
+  const [storyOpen, setStoryOpen] = useState(false);
   const umaItems = [
     "Struktur kayu tahan gempa warisan rekayasa leluhur.",
     "Atap ilalang menjulang berfungsi sebagai lumbung padi (sokolo) di tingkat paling atas.",
@@ -28,9 +32,12 @@ export default function Tenun() {
             tekstur benang dan memahami makna di balik motif Bunga Samobo, Kakando, hingga
             Nggusu Waru.
           </p>
-          <button className="inline-flex items-center gap-2 bg-[#d4af37] text-black px-8 py-4 rounded-lg font-bold hover:bg-[#e8cc6a] transition-colors duration-200 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]">
-            <Box size={18} />
-            Buka Showcase 3D
+          <button 
+            onClick={() => setStoryOpen(true)}
+            className="inline-flex items-center gap-2 bg-[#d4af37] text-black px-8 py-4 rounded-lg font-bold hover:bg-[#e8cc6a] transition-colors duration-200 shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)]"
+          >
+            <BookOpen size={18} />
+            Baca Kisah Tenun
           </button>
         </FadeIn>
 
@@ -90,6 +97,11 @@ export default function Tenun() {
           </blockquote>
         </FadeIn>
       </div>
+
+      {/* Tenun Story Modal */}
+      <AnimatePresence>
+        {storyOpen && <TenunStory onClose={() => setStoryOpen(false)} />}
+      </AnimatePresence>
     </section>
   );
 }
