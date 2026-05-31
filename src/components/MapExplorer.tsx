@@ -122,9 +122,9 @@ function createDotIcon(dotColor: string, muted = false) {
 function createPinCardIcon(loc: Location, isMobile: boolean) {
   const { dot, iconBg, badgeBg, badgeColor } = categoryStyles[loc.category];
   const svgIcon = INLINE_SVGS[loc.category](badgeColor);
-  const width = isMobile ? 185 : 175;
-  const anchorX = isMobile ? 92 : 87;
-  const totalHeight = isMobile ? 245 : 225;
+  const width = isMobile ? 160 : 175;
+  const anchorX = isMobile ? 80 : 87;
+  const totalHeight = isMobile ? 220 : 225;
   const html = `
     <div style="display:flex;flex-direction:column;align-items:center;cursor:pointer;">
       <div style="background:#111;border:1px solid #d4af37;border-radius:12px;width:${width}px;padding:10px 12px;box-shadow:0 8px 28px rgba(0,0,0,0.7);">
@@ -240,8 +240,151 @@ export default function MapExplorer({ onClose }: { onClose: () => void }) {
       >
         <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={onClose} />
 
-        <div className="relative flex h-[90vh] max-h-[700px] w-full max-w-[1600px] flex-col overflow-hidden rounded-3xl border border-[#222] bg-[#0d0d0d] shadow-2xl">
-          <div className="flex items-center gap-3 bg-[#111] border-b border-[#1e1e1e] px-4 h-[52px] flex-shrink-0">
+        {isMobileView ? (
+          <div className="relative z-[1001] flex flex-col h-[100dvh] w-full overflow-hidden bg-[#0d0d0d]">
+            <div className="flex-shrink-0 flex items-center gap-2.5 border-b border-[#222] bg-[#111] px-3.5 py-2.5">
+            <button
+              type="button"
+              aria-label="Kembali"
+              onClick={onClose}
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-[#2a2a2a] bg-[#1a1a1a] text-[#aaa]"
+            >
+              <ArrowLeft size={13} />
+            </button>
+            <div className="flex flex-1 min-w-0 items-center gap-2 rounded-full border border-[#2a2a2a] bg-[#1a1a1a] px-3 py-[6px]">
+              <Search size={11} className="text-[#555]" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari lokasi budaya..."
+                className="w-full bg-transparent border-none outline-none text-[10px] text-[#e5e5e5] placeholder:text-[#444]"
+              />
+            </div>
+            <button
+              type="button"
+              aria-label="Tutup"
+              onClick={onClose}
+              className="flex h-[30px] w-[30px] items-center justify-center rounded-full border border-[#2a2a2a] bg-[#1a1a1a] text-[#666]"
+            >
+              <X size={12} />
+            </button>
+          </div>
+          <div className="flex-shrink-0 border-b border-[#1a1a1a] bg-[#0d0d0d] px-3 py-2 overflow-x-auto scrollbar-hide">
+            <div className="flex gap-1.5">
+              {(["semua", "sejarah", "tenun", "kuliner", "alam"] as const).map((cat) => {
+                const isActive = activeFilter === cat;
+                const Icon = cat !== "semua" ? CATEGORY_ICONS[cat] : null;
+                const color = cat === "semua" ? "#d4af37" : CATEGORY_COLORS[cat];
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveFilter(cat)}
+                    className={`flex items-center gap-1 rounded-full border px-[10px] py-[4px] text-[10px] font-semibold transition ${
+                      isActive ? "bg-[#d4af37] text-black border-[#d4af37]" : "bg-transparent"
+                    }`}
+                    style={isActive ? undefined : { borderColor: color, color }}
+                  >
+                    {Icon ? <Icon size={12} /> : null}
+                    {cat === "semua" ? "Semua" : cat.charAt(0).toUpperCase() + cat.slice(1)}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="relative flex-1 min-h-0 overflow-hidden bg-[#0d0d0d]">
+            <MapContainer center={[-8.4606, 118.7265]} zoom={10} zoomControl={false} className="w-full h-full">
+              <MapBridge onMapReady={handleMapReady} onMapClick={closePopup} />
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              {filteredLocations.map((loc) => {
+                const isSelected = selectedId === loc.id;
+                const styles = categoryStyles[loc.category];
+                const icon = isSelected ? createPinCardIcon(loc, true) : createDotIcon(styles.dot, selectedId !== null);
+                return (
+                  <Marker
+                    key={loc.id}
+                    position={loc.coords as L.LatLngExpression}
+                    icon={icon}
+                    eventHandlers={{ click: (e) => handleMarkerClick(e as any, loc) }}
+                  />
+                );
+              })}
+            </MapContainer>
+
+            <div className="absolute right-2.5 top-1/2 z-[1001] -translate-y-1/2 flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => mapRef.current?.zoomIn()}
+                className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-[#2a2a2a] bg-[rgba(13,13,13,0.9)] text-[#bbb]"
+              >
+                <Plus size={14} />
+              </button>
+              <button
+                type="button"
+                onClick={() => mapRef.current?.zoomOut()}
+                className="flex h-[30px] w-[30px] items-center justify-center rounded-lg border border-[#2a2a2a] bg-[rgba(13,13,13,0.9)] text-[#bbb]"
+              >
+                <Minus size={14} />
+              </button>
+            </div>
+
+            <div className="absolute left-2.5 bottom-2.5 z-[1001] rounded-lg border border-[#222] bg-[rgba(13,13,13,0.92)] px-2.5 py-2 flex flex-col gap-1 text-[9px] text-[#aaa]">
+              {(["sejarah", "tenun", "kuliner", "alam"] as Location["category"][]).map((c) => (
+                <div key={c} className="flex items-center gap-2">
+                  <span style={{ width: 7, height: 7, background: CATEGORY_COLORS[c], borderRadius: 999 }} />
+                  <span>{c}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex-shrink-0 border-t border-[#222] bg-[#111] rounded-t-[16px]">
+            <div className="mx-auto mt-2 h-0.5 w-8 rounded-full bg-[#333]" />
+            <div className="flex items-center justify-between border-b border-[#1e1e1e] px-3.5 py-2">
+              <span className="text-[9px] uppercase tracking-widest text-[#555] font-semibold">LOKASI BUDAYA</span>
+              <span className="text-[9px] font-semibold text-[#d4af37]">{filteredLocations.length} lokasi</span>
+            </div>
+            <div className="flex gap-2 px-3 pb-3.5 pt-2 overflow-x-auto scrollbar-hide">
+              {filteredLocations.map((loc) => {
+                const isActive = selectedId === loc.id;
+                const Icon = CATEGORY_ICONS[loc.category];
+                return (
+                  <div
+                    key={loc.id}
+                    ref={(el) => {
+                      cardRefs.current[loc.id] = el;
+                    }}
+                    onClick={() => handleCardSelect(loc)}
+                    className={`flex-shrink-0 w-[120px] cursor-pointer rounded-xl border p-2.5 transition ${
+                      isActive ? "border-[#d4af37] bg-[#1a1600]" : "border-[#2a2a2a] bg-[#161616]"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-[22px] w-[22px] items-center justify-center rounded-[6px] bg-[#111]">
+                        <Icon size={12} className="text-[#ccc]" />
+                      </div>
+                      <div className="text-[10px] font-semibold leading-[1.2] text-[#e5e5e5] truncate">{loc.name}</div>
+                    </div>
+                    <div
+                      className="mt-2 inline-block rounded-full px-1.5 py-0.5 text-[8px] font-semibold"
+                      style={{
+                        background: CATEGORY_BADGE_STYLES[loc.category].bg,
+                        color: CATEGORY_BADGE_STYLES[loc.category].text,
+                      }}
+                    >
+                      {loc.category}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        ) : (
+          <div className="relative flex h-[90vh] max-h-[700px] w-full max-w-[1600px] flex-col overflow-hidden rounded-3xl border border-[#222] bg-[#0d0d0d] shadow-2xl">
+            <div className="flex items-center gap-3 bg-[#111] border-b border-[#1e1e1e] px-4 h-[52px] flex-shrink-0">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#161616] text-[#d4af37]">
                 <MapPin size={18} />
@@ -297,43 +440,7 @@ export default function MapExplorer({ onClose }: { onClose: () => void }) {
 
           <div className="flex flex-1 min-h-0 overflow-hidden">
             <div className="flex-1 relative overflow-hidden bg-[#0d0d0d]">
-              <div className="md:hidden absolute top-0 left-0 right-0 z-[1001] px-3 py-2.5 flex items-center gap-2 bg-[#0d0d0d]/90 backdrop-blur-sm">
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="flex h-[34px] w-[34px] items-center justify-center rounded-full border border-[#333] bg-[#0d0d0d] text-[#ccc]"
-                >
-                  <ArrowLeft size={14} />
-                </button>
-                <div className="flex flex-1 items-center gap-2 rounded-[20px] border border-[#2a2a2a] bg-[#0d0d0d] px-3 py-1 text-[#555]">
-                  <Search size={12} />
-                  <span className="text-[11px] text-[#555]">Cari lokasi budaya...</span>
-                </div>
-              </div>
-
-              <div className="md:hidden absolute top-[52px] left-0 right-0 z-[1001] px-3">
-                <div className="flex gap-1.5 overflow-x-auto whitespace-nowrap pb-2 scrollbar-hide">
-                  {(["semua", "sejarah", "tenun", "kuliner", "alam"] as const).map((cat) => {
-                    const isActive = activeFilter === cat;
-                    const Icon = cat !== "semua" ? CATEGORY_ICONS[cat] : null;
-                    const color = cat === "semua" ? "#d4af37" : CATEGORY_COLORS[cat];
-                    return (
-                      <button
-                        key={cat}
-                        onClick={() => setActiveFilter(cat)}
-                        className={`flex items-center gap-1 rounded-full border px-[10px] py-[4px] text-[10px] font-semibold transition ${
-                          isActive ? "bg-[#d4af37] text-black border-[#d4af37]" : "bg-[#0d0d0d]/90"
-                        }`}
-                        style={isActive ? undefined : { borderColor: color, color }}
-                      >
-                        {Icon ? <Icon size={12} /> : null}
-                        {cat === "semua" ? "Semua" : cat.charAt(0).toUpperCase() + cat.slice(1)}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
+  
               <div className="absolute inset-0">
                 <MapContainer
                   center={[-8.4606, 118.7265]}
@@ -348,7 +455,7 @@ export default function MapExplorer({ onClose }: { onClose: () => void }) {
                     const isSelected = selectedId === loc.id;
                     const styles = categoryStyles[loc.category];
                     const icon = isSelected
-                      ? createPinCardIcon(loc, isMobileView)
+                      ? createPinCardIcon(loc, false)
                       : createDotIcon(styles.dot, selectedId !== null);
                     return (
                       <Marker
@@ -379,17 +486,6 @@ export default function MapExplorer({ onClose }: { onClose: () => void }) {
                 </button>
               </div>
 
-              <div className="absolute left-3 bottom-3 z-[1001] rounded-lg border border-[#222] bg-[#0d0d0d]/95 px-3 py-2 text-[10px] text-[#aaa] md:hidden">
-                <div className="space-y-1">
-                  {(["sejarah", "tenun", "kuliner", "alam"] as Location["category"][]).map((c) => (
-                    <div key={c} className="flex items-center gap-2">
-                      <span style={{ width: 7, height: 7, background: CATEGORY_COLORS[c], borderRadius: 999 }} />
-                      <span>{c}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
               <div className="hidden md:block absolute left-3 bottom-3 z-[1001] rounded-lg border border-[#222] bg-[#0d0d0d]/95 px-3 py-2 text-sm text-[#aaa]">
                 <div className="space-y-2">
                   {(["sejarah", "tenun", "kuliner", "alam"] as Location["category"][]).map((c) => (
@@ -402,7 +498,7 @@ export default function MapExplorer({ onClose }: { onClose: () => void }) {
               </div>
             </div>
 
-            <div className="w-[200px] flex-shrink-0 bg-[#111] border-l border-[#1e1e1e] flex flex-col">
+            <div className="hidden md:flex w-[200px] flex-shrink-0 bg-[#111] border-l border-[#1e1e1e] flex flex-col">
               <div className="px-4 py-3 border-b border-[#1e1e1e] flex items-center justify-between flex-shrink-0">
                 <span className="text-[10px] uppercase tracking-[0.24em] text-[#555]">LOKASI BUDAYA</span>
                 <span className="text-[10px] font-bold text-[#d4af37]">{selectedCount} lokasi</span>
@@ -441,51 +537,8 @@ export default function MapExplorer({ onClose }: { onClose: () => void }) {
             </div>
           </div>
 
-          <div className="md:hidden border-t border-[#2a2a2a] bg-[#111] rounded-t-[20px]">
-            <div className="mx-auto mt-2.5 h-1 w-12 rounded-full bg-[#333]" />
-            <div className="flex items-center justify-between border-b border-[#1e1e1e] px-4 py-2">
-              <span className="text-[10px] tracking-[0.08em] text-[#888] uppercase">Lokasi Budaya</span>
-              <span className="text-[10px] font-bold text-[#d4af37]">{selectedCount} lokasi</span>
-            </div>
-            <div className="flex gap-2.5 overflow-x-auto px-3 pb-4 pt-2.5 scrollbar-hide whitespace-nowrap">
-              {filteredLocations.map((loc) => {
-                const isActive = selectedId === loc.id;
-                const Icon = CATEGORY_ICONS[loc.category];
-                return (
-                  <div
-                    key={loc.id}
-                    ref={(el) => {
-                      cardRefs.current[loc.id] = el;
-                    }}
-                    onClick={() => handleCardSelect(loc)}
-                    className={`flex-shrink-0 w-[140px] cursor-pointer rounded-[12px] border p-2 transition ${
-                      isActive ? "border-[#d4af37] bg-[#1a1600]" : "border-[#2a2a2a] bg-[#161616]"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2">
-                      <div className="flex h-[26px] w-[26px] items-center justify-center rounded-[8px] bg-[#111]">
-                        <Icon size={13} className="text-[#ccc]" />
-                      </div>
-                      <div className="text-[11px] font-semibold leading-[1.3] text-[#e5e5e5]">
-                        {loc.name}
-                      </div>
-                    </div>
-                    <div
-                      className="mt-2 inline-block rounded-full px-[7px] py-[2px] text-[9px] font-semibold"
-                      style={{
-                        background: CATEGORY_BADGE_STYLES[loc.category].bg,
-                        color: CATEGORY_BADGE_STYLES[loc.category].text,
-                      }}
-                    >
-                      {loc.category}
-                    </div>
-                    {isActive && <p className="mt-1.5 text-[9px] leading-[1.4] text-[#aaa]">{loc.desc}</p>}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
         </div>
+        )}
 
         <style jsx global>{`
           .leaflet-popup-content-wrapper {
