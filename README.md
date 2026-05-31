@@ -1,36 +1,148 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Budaya Bima — Maja Labo Dahu
 
-## Getting Started
+> *"Malu berbuat hal yang menyimpang, Takut kepada Tuhan."*
+> Platform digital interaktif untuk mengeksplorasi kekayaan budaya Bima — sejarah, tenun, kuliner, dan tradisi masyarakat Mbojo.
 
-First, run the development server:
+🌐 **Live Demo:** [budaya-bima.vercel.app](https://budaya-bima.vercel.app)
+
+---
+
+## Fitur Utama
+
+- **Sejarah Bima** — Perjalanan dari era Masa Naka, Kerajaan Bima, Kesultanan Islam, hingga Bima Modern
+- **Galeri** — Koleksi foto dan visual budaya masyarakat Mbojo
+- **Tenun Nggoli** — Showcase 100+ motif tenun klasik khas Bima
+- **Kamus Interaktif** — Kamus bahasa Mbojo yang dapat dijelajahi
+- **Peta Budaya** — Peta interaktif persebaran lokasi dan tradisi budaya Bima
+- **Kuliner & Event** — Informasi kuliner khas dan event budaya lokal
+- **Multibahasa** — Tersedia dalam Bahasa Indonesia dan Bahasa Inggris (i18n)
+
+---
+
+## Tech Stack
+
+| Teknologi | Versi | Keterangan |
+|---|---|---|
+| [Next.js](https://nextjs.org) | 16.2.6 | Framework utama (App Router) |
+| [React](https://react.dev) | 19.2.4 | UI library |
+| [TypeScript](https://www.typescriptlang.org) | ^5 | Type safety |
+| [Tailwind CSS](https://tailwindcss.com) | ^4 | Styling |
+| [next-intl](https://next-intl-docs.vercel.app) | ^4.13.0 | Internasionalisasi (ID & EN) |
+| [Framer Motion](https://www.framer.com/motion) | ^12.40.0 | Animasi |
+| [Leaflet](https://leafletjs.com) + [React Leaflet](https://react-leaflet.js.org) | ^1.9.4 / ^5.0.0 | Peta interaktif |
+| [Lucide React](https://lucide.dev) | ^1.17.0 | Icon library |
+
+---
+
+## Struktur Proyek
+
+```
+budaya-bima/
+├── messages/
+│   ├── en.json          # Terjemahan Bahasa Inggris
+│   └── id.json          # Terjemahan Bahasa Indonesia
+├── public/
+│   └── images/          # Aset gambar statis
+├── src/
+│   └── app/
+│       ├── [locale]/    # Routing berbasis locale (id / en)
+│       │   ├── page.tsx
+│       │   └── layout.tsx
+│       ├── components/  # Komponen UI
+│       │   ├── ClientSections.tsx
+│       │   ├── FadeIn.tsx
+│       │   ├── Footer.tsx
+│       │   ├── Galeri.tsx
+│       │   ├── Hero.tsx
+│       │   ├── Kamus.tsx
+│       │   ├── Kuliner.tsx
+│       │   ├── MapExplorer.tsx
+│       │   ├── Navbar.tsx
+│       │   ├── Sejarah.tsx
+│       │   └── Tenun.tsx
+│       └── lib/
+│           └── i18n.ts  # Konfigurasi internasionalisasi
+```
+
+---
+
+## Memulai Pengembangan
+
+### Prasyarat
+
+Pastikan sudah terinstal:
+- [Node.js](https://nodejs.org) versi 18 atau lebih baru
+- npm, yarn, atau pnpm
+
+### Instalasi
+
+```bash
+# Clone repositori
+git clone https://github.com/username/budaya-bima.git
+cd budaya-bima
+
+# Install dependensi
+npm install
+```
+
+### Menjalankan Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000) di browser. Aplikasi secara otomatis akan redirect ke locale default (`/id`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build untuk Produksi
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Internasionalisasi (i18n)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Proyek ini menggunakan `next-intl` dengan App Router. Semua teks UI tersimpan di folder `messages/`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+messages/
+├── id.json   → Bahasa Indonesia (default)
+└── en.json   → English
+```
 
-## Deploy on Vercel
+Routing locale ditangani secara otomatis melalui folder `[locale]` di dalam `app/`. Untuk menambahkan bahasa baru, tambahkan file JSON baru di `messages/` dan daftarkan locale-nya di konfigurasi `next-intl`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+Proyek ini di-deploy di **[Vercel](https://vercel.com)**. Setiap push ke branch `main` akan men-trigger deployment otomatis.
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/username/budaya-bima)
+
+---
+
+## Kontribusi
+
+Kontribusi sangat disambut! Jika kamu ingin berkontribusi:
+
+1. Fork repositori ini
+2. Buat branch fitur baru (`git checkout -b fitur/nama-fitur`)
+3. Commit perubahan (`git commit -m 'feat: tambah fitur baru'`)
+4. Push ke branch (`git push origin fitur/nama-fitur`)
+5. Buka Pull Request
+
+---
+
+## Lisensi
+
+Proyek ini dibuat untuk pelestarian budaya Bima. Silakan gunakan dan kembangkan untuk tujuan edukatif dan non-komersial.
+
+---
+
+<div align="center">
+  <p>Dibuat dengan ❤️ untuk melestarikan warisan budaya <strong>Mbojo</strong></p>
+  <p><em>Maja Labo Dahu</em></p>
+</div>
