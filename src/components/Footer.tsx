@@ -26,12 +26,12 @@ function Footer({ messages }: FooterProps) {
           <div className="inline-flex flex-col md:flex-row items-center justify-center gap-4 bg-[#161616] px-8 py-4 rounded-full border border-gray-800 shadow-xl">
             <span className="text-[#d4af37] font-bold tracking-widest text-sm flex items-center gap-2">
               <Globe size={15} />
-              WWW.BIMACULTURE.ID
+              WWW.BUDAYABIMA.ID
             </span>
             <span className="hidden md:inline text-gray-700">|</span>
             <span className="text-[#d4af37] font-bold tracking-widest text-sm flex items-center gap-2">
               <Mail size={15} />
-              EXPLORE@BIMACULTURE.ID
+              EXPLORE@BUDAYABIMA.ID
             </span>
           </div>
 
