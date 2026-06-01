@@ -3,7 +3,7 @@
 import { memo, useState } from "react";
 import FadeIn from "./FadeIn";
 import { AnimatePresence, motion } from "framer-motion";
-import { Globe, Mail, MapPin, Github, Linkedin, ArrowUpRight } from "lucide-react";
+import { Globe, Mail, MapPin, Github, ArrowUpRight } from "lucide-react";
 
 interface FooterProps {
   messages: {
@@ -117,7 +117,17 @@ function Footer({ messages }: FooterProps) {
                           className="flex items-center gap-2.5 px-2.5 py-2 bg-[#161616] border border-[#222] rounded-lg hover:border-[#d4af3750] hover:bg-[#1a1a1a] transition-colors duration-200 group"
                         >
                           <div className="w-[22px] h-[22px] rounded-md bg-[#0a1929] flex items-center justify-center flex-shrink-0">
-                            <Linkedin size={12} className="text-[#0a66c2]" />
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="#0a66c2"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                              <rect x="2" y="9" width="4" height="12" />
+                              <circle cx="4" cy="4" r="2" />
+                            </svg>
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-[#666] text-[9px] uppercase tracking-wider">LinkedIn</p>
