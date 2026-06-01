@@ -62,7 +62,7 @@ export default function Footer({ messages }: FooterProps) {
                 onClick={() => setShowCard((v) => !v)}
                 className="text-[#d4af37] text-[11px] font-semibold cursor-pointer border-b border-dashed border-[#d4af3780] pb-px hover:text-[#e8cc6a] transition-colors duration-200"
               >
-                Annasirat (Aan)
+                Aan
               </span>
 
               <AnimatePresence>
@@ -89,7 +89,7 @@ export default function Footer({ messages }: FooterProps) {
                         </div>
                         <div>
                           <p className="text-[#e5e5e5] text-[13px] font-bold leading-tight">
-                            Annasirat (Aan)
+                            Aan
                           </p>
                           <p className="text-[#d4af37] text-[10px] mt-0.5">
                             Front-end - UI/UX
