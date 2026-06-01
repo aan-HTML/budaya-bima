@@ -72,7 +72,7 @@ const eventItems = [
 ];
 
 const scrollTo = (
-  ref: RefObject<HTMLDivElement>,
+  ref: RefObject<HTMLDivElement | null>,
   index: number,
   setIndex: (i: number) => void,
   total: number,
