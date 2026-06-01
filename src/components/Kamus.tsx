@@ -81,7 +81,7 @@ export default function Kamus() {
           </p>
           <div className="relative rounded-xl overflow-hidden shadow-2xl border border-gray-700 h-[420px] group">
             <Image
-              src="/images/map-bima.jpg"
+              src="/images/map-bima.webp"
               alt="Peta Administrasi Bima"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"

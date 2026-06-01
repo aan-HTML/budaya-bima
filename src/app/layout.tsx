@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap"
           rel="stylesheet"
         />
-        <link rel="preload" as="image" href="/images/hero-bg.jpg" />
+        <link rel="preload" as="image" href="/images/hero-bg.webp" />
       </head>
       <body className="bg-[#0d0d0d] text-gray-200 antialiased overflow-x-hidden">
         {children}

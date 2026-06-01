@@ -5,19 +5,19 @@ import FadeIn from "./FadeIn";
 
 const galeriItems = [
   {
-    src: "/images/galeri-1.jpg",
+    src: "/images/galeri-1.webp",
     alt: "Tari Wura Bongi Monca",
     title: "Seni Tari",
     desc: "Gemulai Tari Wura Bongi Monca yang elegan, tarian istana untuk penyambutan tamu kehormatan.",
   },
   {
-    src: "/images/galeri-2.jpg",
+    src: "/images/galeri-2.webp",
     alt: "Busana Adat Bima",
     title: "Busana Adat",
     desc: "Keanggunan pakaian kebesaran adat dan pengantin Bima yang kaya akan ornamen keemasan.",
   },
   {
-    src: "/images/galeri-3.jpg",
+    src: "/images/galeri-3.webp",
     alt: "Uma Lengge",
     title: "Arsitektur",
     desc: "Bentuk ikonis Uma Lengge dengan atap menjulang, simbol kearifan sistem ketahanan pangan.",
