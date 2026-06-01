@@ -21,7 +21,7 @@ body {
 .hero-bg {
   background-image:
     linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.80)),
-    url('/images/hero-bg.jpg');
+    url('/images/hero-bg.webp');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
