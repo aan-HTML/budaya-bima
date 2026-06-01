@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import FadeIn from "./FadeIn";
-import { Church, Building, Shirt } from "lucide-react";
+import { useRef, useState, type RefObject } from "react";
+import { Church, Building, Shirt, ChevronLeft, ChevronRight } from "lucide-react";
 
 const kulinerItems = [
   {
@@ -70,7 +71,31 @@ const eventItems = [
   },
 ];
 
+const scrollTo = (
+  ref: RefObject<HTMLDivElement>,
+  index: number,
+  setIndex: (i: number) => void,
+  total: number,
+  direction: "prev" | "next"
+) => {
+  const newIndex = direction === "next" ? Math.min(index + 1, total - 1) : Math.max(index - 1, 0);
+  setIndex(newIndex);
+
+  if (ref.current) {
+    const cardWidth = ref.current.scrollWidth / total;
+    ref.current.scrollTo({
+      left: cardWidth * newIndex,
+      behavior: "smooth",
+    });
+  }
+};
+
 export default function Kuliner() {
+  const [kulinerIndex, setKulinerIndex] = useState(0);
+  const [eventIndex, setEventIndex] = useState(0);
+  const kulinerRef = useRef<HTMLDivElement>(null);
+  const eventRef = useRef<HTMLDivElement>(null);
+
   return (
     <section id="kuliner" className="py-24 px-6 max-w-7xl mx-auto">
       {/* Kuliner */}
@@ -82,7 +107,13 @@ export default function Kuliner() {
           <div className="w-24 h-px bg-[#d4af37] mx-auto mt-4" />
         </FadeIn>
 
-        <div className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+        <div
+          ref={kulinerRef}
+          className="flex md:grid md:grid-cols-3 gap-6 overflow-hidden md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0"
+          style={{ scrollbarWidth: "none", touchAction: "none", overflowX: "hidden" }}
+          onTouchStart={(e) => e.preventDefault()}
+          onTouchMove={(e) => e.preventDefault()}
+        >
           {kulinerItems.map((item, i) => (
             <FadeIn key={item.title} delay={i * 0.12} className="snap-start shrink-0 w-[80vw] md:w-auto">
               <div className="bg-[#161616] rounded-xl overflow-hidden border border-gray-800 hover:-translate-y-2 hover:border-[#d4af37]/30 transition-all duration-300 shadow-lg h-full flex flex-col">
@@ -120,6 +151,45 @@ export default function Kuliner() {
             </FadeIn>
           ))}
         </div>
+
+        <div className="flex items-center justify-center gap-3 mt-4 md:hidden">
+          <button
+            onClick={() => scrollTo(kulinerRef, kulinerIndex, setKulinerIndex, kulinerItems.length, "prev")}
+            className="transition-opacity duration-300"
+            style={{ opacity: kulinerIndex === 0 ? 0.3 : 1 }}
+            disabled={kulinerIndex === 0}
+            aria-label="Sebelumnya"
+          >
+            <div className="w-9 h-9 rounded-full bg-[#161616] border border-[#2a2a2a] flex items-center justify-center text-[#d4af37]">
+              <ChevronLeft size={16} />
+            </div>
+          </button>
+
+          <div className="flex items-center gap-1.5">
+            {kulinerItems.map((_, i) => (
+              <div
+                key={i}
+                className="h-[5px] rounded-full transition-all duration-300 bg-[#2a2a2a]"
+                style={{
+                  width: i === kulinerIndex ? "16px" : "5px",
+                  background: i === kulinerIndex ? "#d4af37" : "#2a2a2a",
+                }}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={() => scrollTo(kulinerRef, kulinerIndex, setKulinerIndex, kulinerItems.length, "next")}
+            className="transition-opacity duration-300"
+            style={{ opacity: kulinerIndex === kulinerItems.length - 1 ? 0.3 : 1 }}
+            disabled={kulinerIndex === kulinerItems.length - 1}
+            aria-label="Selanjutnya"
+          >
+            <div className="w-9 h-9 rounded-full bg-[#161616] border border-[#2a2a2a] flex items-center justify-center text-[#d4af37]">
+              <ChevronRight size={16} />
+            </div>
+          </button>
+        </div>
       </div>
 
       {/* Events */}
@@ -129,7 +199,13 @@ export default function Kuliner() {
           <div className="w-24 h-px bg-[#d4af37] mx-auto mt-4" />
         </FadeIn>
 
-        <div className="flex md:flex-col gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] max-w-4xl mx-auto">
+        <div
+          ref={eventRef}
+          className="flex md:flex-col gap-6 overflow-hidden md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] max-w-4xl mx-auto"
+          style={{ scrollbarWidth: "none", touchAction: "none", overflowX: "hidden" }}
+          onTouchStart={(e) => e.preventDefault()}
+          onTouchMove={(e) => e.preventDefault()}
+        >
           {eventItems.map((item, i) => (
             <FadeIn key={item.title} delay={i * 0.1} className="snap-start shrink-0 w-[85vw] md:w-auto">
               <div className="bg-[#161616] p-6 md:p-8 rounded-xl border border-gray-800 flex flex-col md:flex-row gap-6 items-center shadow-lg hover:border-[#d4af37]/40 transition-colors duration-200">
@@ -143,6 +219,45 @@ export default function Kuliner() {
               </div>
             </FadeIn>
           ))}
+        </div>
+
+        <div className="flex items-center justify-center gap-3 mt-4 md:hidden">
+          <button
+            onClick={() => scrollTo(eventRef, eventIndex, setEventIndex, eventItems.length, "prev")}
+            className="transition-opacity duration-300"
+            style={{ opacity: eventIndex === 0 ? 0.3 : 1 }}
+            disabled={eventIndex === 0}
+            aria-label="Sebelumnya"
+          >
+            <div className="w-9 h-9 rounded-full bg-[#161616] border border-[#2a2a2a] flex items-center justify-center text-[#d4af37]">
+              <ChevronLeft size={16} />
+            </div>
+          </button>
+
+          <div className="flex items-center gap-1.5">
+            {eventItems.map((_, i) => (
+              <div
+                key={i}
+                className="h-[5px] rounded-full transition-all duration-300 bg-[#2a2a2a]"
+                style={{
+                  width: i === eventIndex ? "16px" : "5px",
+                  background: i === eventIndex ? "#d4af37" : "#2a2a2a",
+                }}
+              />
+            ))}
+          </div>
+
+          <button
+            onClick={() => scrollTo(eventRef, eventIndex, setEventIndex, eventItems.length, "next")}
+            className="transition-opacity duration-300"
+            style={{ opacity: eventIndex === eventItems.length - 1 ? 0.3 : 1 }}
+            disabled={eventIndex === eventItems.length - 1}
+            aria-label="Selanjutnya"
+          >
+            <div className="w-9 h-9 rounded-full bg-[#161616] border border-[#2a2a2a] flex items-center justify-center text-[#d4af37]">
+              <ChevronRight size={16} />
+            </div>
+          </button>
         </div>
       </div>
     </section>
