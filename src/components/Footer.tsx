@@ -103,7 +103,7 @@ export default function Footer({ messages }: FooterProps) {
 
                       {/* Links */}
                       <div className="p-3 flex flex-col gap-2">
-                        
+                        <a
                           href="https://aan.my.id"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -119,7 +119,7 @@ export default function Footer({ messages }: FooterProps) {
                           <ArrowUpRight size={11} className="text-[#444] group-hover:text-[#d4af37] transition-colors" />
                         </a>
 
-                        
+                        <a
                           href="https://github.com/aan-HTML"
                           target="_blank"
                           rel="noopener noreferrer"
@@ -135,7 +135,7 @@ export default function Footer({ messages }: FooterProps) {
                           <ArrowUpRight size={11} className="text-[#444] group-hover:text-[#d4af37] transition-colors" />
                         </a>
 
-                        
+                        <a
                           href="https://linkedin.com/in/aan270510"
                           target="_blank"
                           rel="noopener noreferrer"
