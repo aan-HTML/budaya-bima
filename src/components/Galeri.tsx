@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import FadeIn from "./FadeIn";
-import { useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const galeriItems = [
@@ -48,6 +48,40 @@ const scrollTo = (
 export default function Galeri() {
   const [galeriIndex, setGaleriIndex] = useState(0);
   const galeriRef = useRef<HTMLDivElement>(null);
+  const galeriTouchStartX = useRef<number>(0);
+  const galeriTouchStartY = useRef<number>(0);
+  const galeriIsHorizontal = useRef<boolean | null>(null);
+
+  useEffect(() => {
+    const el = galeriRef.current;
+    if (!el) return;
+
+    const onTouchMove = (e: TouchEvent) => {
+      const deltaX = Math.abs(e.touches[0].clientX - galeriTouchStartX.current);
+      const deltaY = Math.abs(e.touches[0].clientY - galeriTouchStartY.current);
+
+      if (galeriIsHorizontal.current === null && (deltaX > 3 || deltaY > 3)) {
+        galeriIsHorizontal.current = deltaX > deltaY;
+      }
+
+      if (galeriIsHorizontal.current === true) {
+        e.preventDefault();
+      }
+    };
+
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => el.removeEventListener("touchmove", onTouchMove);
+  }, []);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    galeriTouchStartX.current = e.touches[0].clientX;
+    galeriTouchStartY.current = e.touches[0].clientY;
+    galeriIsHorizontal.current = null;
+  };
+
+  const handleTouchEnd = () => {
+    galeriIsHorizontal.current = null;
+  };
 
   return (
     <section id="galeri" className="py-24 bg-[#111111]">
@@ -60,9 +94,9 @@ export default function Galeri() {
         <div
           ref={galeriRef}
           className="flex md:grid md:grid-cols-3 gap-6 overflow-hidden md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0"
-          style={{ scrollbarWidth: "none", touchAction: "none", overflowX: "hidden" }}
-          onTouchStart={(e) => e.preventDefault()}
-          onTouchMove={(e) => e.preventDefault()}
+          style={{ scrollbarWidth: "none", overflowX: "hidden" }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
         >
           {galeriItems.map((item, i) => (
             <FadeIn key={item.title} delay={i * 0.15} className="snap-start shrink-0 w-[80vw] md:w-auto">

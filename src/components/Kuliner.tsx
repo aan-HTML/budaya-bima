@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import FadeIn from "./FadeIn";
-import { useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { Church, Building, Shirt, ChevronLeft, ChevronRight } from "lucide-react";
 
 const kulinerItems = [
@@ -96,6 +96,75 @@ export default function Kuliner() {
   const kulinerRef = useRef<HTMLDivElement>(null);
   const eventRef = useRef<HTMLDivElement>(null);
 
+  const kulinerTouchStartX = useRef<number>(0);
+  const kulinerTouchStartY = useRef<number>(0);
+  const kulinerIsHorizontal = useRef<boolean | null>(null);
+  const eventTouchStartX = useRef<number>(0);
+  const eventTouchStartY = useRef<number>(0);
+  const eventIsHorizontal = useRef<boolean | null>(null);
+
+  useEffect(() => {
+    const el = kulinerRef.current;
+    if (!el) return;
+
+    const onTouchMove = (e: TouchEvent) => {
+      const deltaX = Math.abs(e.touches[0].clientX - kulinerTouchStartX.current);
+      const deltaY = Math.abs(e.touches[0].clientY - kulinerTouchStartY.current);
+
+      if (kulinerIsHorizontal.current === null && (deltaX > 3 || deltaY > 3)) {
+        kulinerIsHorizontal.current = deltaX > deltaY;
+      }
+
+      if (kulinerIsHorizontal.current === true) {
+        e.preventDefault();
+      }
+    };
+
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => el.removeEventListener("touchmove", onTouchMove);
+  }, []);
+
+  useEffect(() => {
+    const el = eventRef.current;
+    if (!el) return;
+
+    const onTouchMove = (e: TouchEvent) => {
+      const deltaX = Math.abs(e.touches[0].clientX - eventTouchStartX.current);
+      const deltaY = Math.abs(e.touches[0].clientY - eventTouchStartY.current);
+
+      if (eventIsHorizontal.current === null && (deltaX > 3 || deltaY > 3)) {
+        eventIsHorizontal.current = deltaX > deltaY;
+      }
+
+      if (eventIsHorizontal.current === true) {
+        e.preventDefault();
+      }
+    };
+
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => el.removeEventListener("touchmove", onTouchMove);
+  }, []);
+
+  const handleKulinerTouchStart = (e: React.TouchEvent) => {
+    kulinerTouchStartX.current = e.touches[0].clientX;
+    kulinerTouchStartY.current = e.touches[0].clientY;
+    kulinerIsHorizontal.current = null;
+  };
+
+  const handleKulinerTouchEnd = () => {
+    kulinerIsHorizontal.current = null;
+  };
+
+  const handleEventTouchStart = (e: React.TouchEvent) => {
+    eventTouchStartX.current = e.touches[0].clientX;
+    eventTouchStartY.current = e.touches[0].clientY;
+    eventIsHorizontal.current = null;
+  };
+
+  const handleEventTouchEnd = () => {
+    eventIsHorizontal.current = null;
+  };
+
   return (
     <section id="kuliner" className="py-24 px-6 max-w-7xl mx-auto">
       {/* Kuliner */}
@@ -110,9 +179,9 @@ export default function Kuliner() {
         <div
           ref={kulinerRef}
           className="flex md:grid md:grid-cols-3 gap-6 overflow-hidden md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0"
-          style={{ scrollbarWidth: "none", touchAction: "none", overflowX: "hidden" }}
-          onTouchStart={(e) => e.preventDefault()}
-          onTouchMove={(e) => e.preventDefault()}
+          style={{ scrollbarWidth: "none", overflowX: "hidden" }}
+          onTouchStart={handleKulinerTouchStart}
+          onTouchEnd={handleKulinerTouchEnd}
         >
           {kulinerItems.map((item, i) => (
             <FadeIn key={item.title} delay={i * 0.12} className="snap-start shrink-0 w-[80vw] md:w-auto">
@@ -202,9 +271,9 @@ export default function Kuliner() {
         <div
           ref={eventRef}
           className="flex md:flex-col gap-6 overflow-hidden md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] max-w-4xl mx-auto"
-          style={{ scrollbarWidth: "none", touchAction: "none", overflowX: "hidden" }}
-          onTouchStart={(e) => e.preventDefault()}
-          onTouchMove={(e) => e.preventDefault()}
+          style={{ scrollbarWidth: "none", overflowX: "hidden" }}
+          onTouchStart={handleEventTouchStart}
+          onTouchEnd={handleEventTouchEnd}
         >
           {eventItems.map((item, i) => (
             <FadeIn key={item.title} delay={i * 0.1} className="snap-start shrink-0 w-[85vw] md:w-auto">
