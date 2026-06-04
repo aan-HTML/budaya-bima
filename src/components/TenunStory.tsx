@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, ChevronLeft, ChevronRight, Check, X } from "lucide-react";
 import Image from "next/image";
@@ -94,6 +94,7 @@ const chapters = [
 
 export default function TenunStory({ onClose }: TenunStoryProps) {
   const [activeChapter, setActiveChapter] = useState(0);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const handleOverlayClick = () => {
     onClose();
@@ -110,6 +111,16 @@ export default function TenunStory({ onClose }: TenunStoryProps) {
       setActiveChapter(activeChapter + 1);
     }
   };
+
+  const scrollToTop = () => {
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    scrollToTop();
+  }, [activeChapter]);
 
   const currentChapter = chapters[activeChapter];
   const firstWord = currentChapter.story[0].split(" ")[0];
@@ -213,7 +224,7 @@ export default function TenunStory({ onClose }: TenunStoryProps) {
           </div>
 
           {/* Content area */}
-          <div className="flex-1 overflow-y-auto px-8 py-8 md:px-10 scroll-smooth">
+          <div ref={contentRef} className="flex-1 overflow-y-auto px-8 py-8 md:px-10 scroll-smooth">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeChapter}
